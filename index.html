@@ -1,0 +1,186 @@
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>have I won</title>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/jquery.csv-0.71.min.js"></script>
+<script>
+$(document).ready(function() {
+		  $("#settings").click(function(){
+			document.getElementById('playerTicket').style.display = "block"
+			});
+
+		  $("#needticket").click(function(){
+			document.getElementById('needticket').style.display = "none"
+			document.getElementById('playerTicket').style.display = "block"
+			});
+			
+			$('#playerTicket').bind('input propertychange', function() {
+			console.clear();
+				haveIwon();
+			});
+		haveIwon();
+		
+	});
+	
+	
+	function haveIwon() {
+	// load results
+	var resultsData = [];
+    var results = $('#resultsCSV').val();
+    resultsData = $.csv.toArrays(results);
+	
+	// load tickets
+	var boardData=[];
+	var boards = $('#playerTicket').val();
+    boardData = $.csv.toArrays(boards);
+	
+	// At the moment there are now winning combos 
+	  var showWinning = 0;
+	 for(var boardRow in boardData) {  
+	  // Get the list of historical results
+	for(var row in resultsData) {
+	//console.log("Checking line " + row + "\n");
+		var matchThree = 0;
+		 
+		// go through it draw in the resultsData
+        for(var item in resultsData[row]) {
+		  
+		  // Get the list of player data
+		 
+		  //console.log ("checking ball number "+item+ "+ resultsData[row][item] + " from : " + resultsData[row] +" against ticket " + boardData[boardRow] );
+		
+		  //alert(resultRow);
+		  // check whether the result is in the player's board
+			  if (jQuery.inArray(resultsData[row][item], boardData[boardRow]) > -1) {
+				matchThree++;
+				
+				
+					if (matchThree >= 3) {
+					//alert(resultsData[row][item]);
+					
+       
+					//console.log("----->match" + row + ": " + resultsData[row] + ": " + matchThree); 
+					
+						showWinning += 1; 
+					}
+				};
+			}
+			
+		}
+		console.log("matches: " + matchThree + "\n");
+      }
+	  
+
+		var elem = document.getElementById('answer');
+		if (showWinning > 0) {
+		  elem.innerHTML = "YES";
+		} else {
+		elem.innerHTML = "NO";
+		}
+		//$.inArray(value, array)
+	}
+	
+	
+ </script>
+ 
+ <style type="text/css">
+    html, body {height: 100%;}
+    body {text-align: center;}
+
+    #answer {
+      display: inline-block;
+      margin-top: 200px;
+      font-weight: bold;
+      font-size: 120pt;
+      font-family: Arial, sans-serif;
+      text-decoration: none;
+      color: black;
+    }
+	
+#settings {
+    position: relative;
+}
+#settings img {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+	</style>
+ </head>
+ <body>
+<div id="settings">
+		<img src="settings.png" width="25" height="25"/>
+		</div>
+ <textarea id=playerTicket style="display:none">
+</textarea>
+</div> 
+ <div id="answer">
+ 
+ </div>
+ <div id="needticket">You need to have a ticket to win it</div>
+
+ 
+ <div id="tabs-2">
+<textarea id=resultsCSV style="display:none">30,29,12,15,35,22
+24,31,13,16,18,43
+11,37,32,48,29,40
+35,22,27,23,12,34
+1,20,35,46,19,30
+17,29,5,49,37,36
+11,42,38,7,1,41
+12,24,35,47,15,6
+3,36,1,25,33,42
+11,5,23,9,30,20
+45,47,40,43,36,16
+17,35,21,29,33,46
+13,28,37,23,45,42
+22,11,42,2,24,5
+8,37,26,35,14,22
+43,30,47,20,14,18
+5,25,38,34,14,9
+11,47,22,27,49,4
+23,43,3,28,19,37
+43,12,3,8,39,11
+15,34,8,23,28,24
+43,18,48,1,38,20
+30,43,49,12,28,8
+34,5,19,25,15,36
+17,3,13,27,40,7
+26,10,11,18,23,37
+23,18,22,29,33,9
+13,40,14,11,28,42
+16,44,23,5,10,31
+31,30,19,48,14,47
+9,40,24,39,7,18
+40,45,26,18,36,32
+44,10,31,40,41,35
+48,2,28,29,9,5
+46,19,20,33,10,43
+15,41,36,35,29,26
+10,5,8,17,16,3
+17,44,38,16,49,22
+30,27,1,9,48,7
+45,9,37,25,44,34
+17,23,22,36,33,42
+16,18,39,34,29,35
+44,20,31,13,34,36
+10,6,1,23,40,25
+4,26,47,22,31,17
+8,20,17,41,43,32
+31,7,45,43,20,3
+39,14,20,38,45,16
+47,21,49,16,14,8
+37,40,35,20,33,29
+28,44,17,20,39,43
+4,27,25,21,31,49
+
+</textarea>
+
+
+
+
+</div>
+</body>
+</html>
